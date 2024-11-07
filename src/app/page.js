@@ -16,7 +16,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Trash2, ThumbsUp, ThumbsDown } from 'lucide-react';
+import Header from "@/components/Header";
 import EditGame from '@/components/EditGame';
+
 
 export default function Home() {
   const pb = new PocketBase('http://172.16.15.151:8080');
@@ -31,6 +33,15 @@ export default function Home() {
     LikesDOWN: 0
   });
   const [picture, setPicture] = useState(null);
+  const [user, setUser] = useState(null)
+
+  const login = (user_pb) => {
+    setUser(user_pb)
+  }
+
+  useEffect(() => {
+    setUser(pb.authStore.model)
+  }, [])
 
   const form = (e, pickedValue) => {
     setGame((prev) => ({
@@ -128,8 +139,11 @@ export default function Home() {
 
   return (
     <div className='w-full h-screen'>
+      <Header login={login}/>
       <div className='flex flex-row gap-5 justify-center items-center w-full h-[70vh]'>
-        {data && data.map((ok, idx) => (
+        {
+          user ?
+          data && data.map((ok, idx) => (
           <Card key={idx} className="flex flex-col justify-center items-center w-[300px] h-[500px]">
             <Image
               src={pb.files.getUrl(ok, ok.zdjecie)}
@@ -163,7 +177,9 @@ export default function Home() {
               </div>
             </CardFooter>
           </Card>
-        ))}
+        )) :
+          <p>Nie jesteś zalogowany</p>
+        }
       </div>
       <Separator className="mb-10" />
       <h1 className='text-3xl text-center mb-5'>DODAJ GRĘ:</h1>

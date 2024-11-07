@@ -19,6 +19,7 @@ export default function EditGame({ dane, onUpdate }) {
         cena: dane.cena,
         wydawca: dane.wydawca,
     });
+    const [picture, setPicture] = useState(null);
 
     const form = (e, nazwa) => {
         setGame((prevGame) => ({
@@ -27,13 +28,18 @@ export default function EditGame({ dane, onUpdate }) {
         }));
     };
 
+    const savePicture = (e) => {
+        console.log(e);
+        setPicture(e.target.files[0]);
+      };
+
     const update = async () => {
         const formData = new FormData();
         formData.append('nazwa', game.nazwa);
         formData.append('opis', game.opis);
         formData.append('cena', game.cena);
         formData.append('wydawca', game.wydawca);
-        // formData.append('zdjecie', picture);
+        formData.append('zdjecie', picture);
 
         try {
             const record = await pb.collection('gry').update(dane.id, formData);
@@ -46,7 +52,7 @@ export default function EditGame({ dane, onUpdate }) {
     return (
         <div>
             <Dialog>
-                <DialogTrigger>
+                <DialogTrigger asChild>
                     <Button variant="ghost">
                         <Pencil color="green" size={64} />
                     </Button>

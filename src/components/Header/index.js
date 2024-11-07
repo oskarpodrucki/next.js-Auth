@@ -1,7 +1,10 @@
-export default function Header(){
-    return(
-        <div className="bg-black  text-white p-2">
-            <h1 className='text-3xl text-center'>POCKETBASE 🎮🎮</h1>
+import LoginAvatar from "../LoginAvatar"
+
+export default function Header({ login }) {
+    return (
+        <div className="flex flex-row bg-black text-white p-2 items-center">
+            <LoginAvatar onLogin={login}/>
+            <h1 className="text-3xl text-center flex-grow ">Gry 🎮🎮</h1>
         </div>
-    )
+    );
 }
